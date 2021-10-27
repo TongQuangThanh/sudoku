@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "sudoku",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
