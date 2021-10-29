@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Play</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="home">
+        <ion-icon slot="icon-only" name="arrow-back-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid id="main" fixed class="ion-justify-content-between">
+    <ion-row style="flex-grow: 1;" class="ion-justify-content-center ion-align-items-center">
+      <ion-col class="ion-justify-content-center" style="display: flex; flex-grow: 0;">
+        <ion-row *ngFor="let row of array; let i = index">
+          <div *ngFor="let col of row; let j = index" [id]="i + '-' + j" (click)="tick(i, j)" class="cell">
+            <ion-text>
+              {{col}}
+            </ion-text>
+            <div [id]="'line-' + i + '-' + j" class="line"></div>
+          </div>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
