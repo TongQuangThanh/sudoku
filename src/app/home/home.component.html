@@ -17,29 +17,6 @@
           </ion-card-header>
           <ion-card-content>
             <form #f="ngForm" (ngSubmit)="onSubmit()" class="ion-text-center">
-              <!-- <ion-item>
-                <ion-label position="floating">Number of player</ion-label>
-                <ion-select name="isOnePlayer" [(ngModel)]="isOnePlayer">
-                  <ion-select-option value="true">1</ion-select-option>
-                  <ion-select-option value="false">2</ion-select-option>
-                </ion-select>
-              </ion-item>
-              <ion-item>
-                <ion-label (click)="chooseSymbol(1, label1.innerText, label2.innerText)">
-                  <p #label1>{{isOnePlayer === 'true' ? 'Your symbol' : '1st player symbol'}}</p>
-                </ion-label>
-                <ion-chip outline="true" [color]="color1">
-                  <ion-label (click)="chooseSymbol(1, label1.innerText, label2.innerText)">{{choose1}}</ion-label>
-                </ion-chip>
-              </ion-item>
-              <ion-item>
-                <ion-label (click)="chooseSymbol(2, label2.innerText, label1.innerText)">
-                  <p #label2>{{isOnePlayer === 'true' ? 'Computer symbol' : '2st player symbol'}}</p>
-                </ion-label>
-                <ion-chip outline="true" [color]="color2">
-                  <ion-label (click)="chooseSymbol(2, label2.innerText, label1.innerText)">{{choose2}}</ion-label>
-                </ion-chip>
-              </ion-item> -->
               <ion-item>
                 <ion-label>Level</ion-label>
                 <ion-select required name="level" [(ngModel)]="level">
@@ -48,24 +25,9 @@
               </ion-item>
               <ion-item>
                 <ion-label position="floating">Input size board</ion-label>
-                <ion-input required name="size" [(ngModel)]="size" type="number" [min]="minSize" [max]="maxSize"
-                  (ionChange)="changeChainToWin()">
+                <ion-input required name="size" [(ngModel)]="size" type="number" [min]="minSize" [max]="maxSize">
                 </ion-input>
               </ion-item>
-              <!-- <ion-item>
-                <ion-label position="floating">Chain to win</ion-label>
-                <ion-input required name="chainToWin" [(ngModel)]="chainToWin" disabled type="number"></ion-input>
-              </ion-item>
-              <ion-item>
-                <ion-label>Confrontation mode</ion-label>
-                <ion-checkbox slot="end" name="confrontation" [(ngModel)]="confrontation" [disabled]="isOnePlayer">
-                </ion-checkbox>
-              </ion-item>
-              <ion-item lines="none">
-                <ion-buttons (click)="modeInfo()" fill="none" class="ion-no-margin" style="font-size: 14px;">
-                  What is confrontation<ion-icon slot="icon-only" name="help-circle-outline" slot="end"></ion-icon>
-                </ion-buttons>
-              </ion-item> -->
               <ion-button class="ion-margin-top" block color="primary" type="submit" [disabled]="!f.valid">
                 Play
               </ion-button>

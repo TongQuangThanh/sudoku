@@ -1,17 +1,18 @@
-:host {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 .cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid;
+  border-top: 1px solid;
+  border-left: 1px solid;
   position: relative;
   width: 20px;
   height: 20px;
+}
+.cell-border-bottom {
+  border-bottom: 1px solid;
+}
+.cell-border-right {
+  border-right: 1px solid;
 }
 @media screen and (min-width: 320px) {
   .cell {
@@ -20,41 +21,16 @@
   }
 }
 
-.line {
-  position: absolute;
-  border-bottom: 2px solid green;
-}
-
-.vertical {
-  transform: rotate(90deg);
-}
-
-.incline-up {
-  transform: rotate(135deg);
-}
-
-.incline-down {
-  transform: rotate(225deg);
-}
-
-.rotate {
-  transform: rotate(180deg);
-}
-
 ion-grid {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.top-right-absolute {
-  position: absolute;
-  top: 0px;
-  right: 0px;
+.cell-select {
+  background-color: var(--ion-color-light-shade);
 }
 
-.top-left-absolute {
-  position: absolute;
-  top: 0px;
-  left: 0px;
+.same-select {
+  background-color: var(--ion-color-light);
 }

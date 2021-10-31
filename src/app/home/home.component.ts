@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StorageService } from './../storage.service';
 import { App } from '@capacitor/app';
+import { levels } from 'src/environments/constants';
 
 @Component({
   selector: 'app-home',
@@ -14,8 +15,8 @@ export class HomeComponent implements OnInit {
   maxSize = 20;
   minSize = 3;
   size = 9;
-  levels = ['Easy', 'Medium', 'Hard'];
-  level = 'Medium';
+  levels = levels;
+  level = levels[0];
   constructor(private storage: StorageService, private router: Router, sharedService: SharedService,
     private routerOutlet: IonRouterOutlet, private platform: Platform, private alertController: AlertController) {
     this.platform.backButton.subscribeWithPriority(-1, () => this.exitApp());

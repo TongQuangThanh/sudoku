@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/prefer-for-of */
 import { StorageService } from './../storage.service';
 import { AfterViewChecked, Component, HostListener, OnInit } from '@angular/core';
 import { AlertController, Platform } from '@ionic/angular';
+import { levels } from 'src/environments/constants';
 
 @Component({
   selector: 'app-play',
@@ -11,11 +13,24 @@ export class PlayComponent implements OnInit, AfterViewChecked {
 
   results = [];
   array = [];
-  level = 'medium';
+  quiz = [];
+  numbers = [];
+  level = 'Easy';
+  levels = levels;
   size = 9;
   count = 0;
   isWin = false;
   cellWidth: number;
+  selectedI: number;
+  selectedJ: number;
+  buttons = [
+    { name: 'Clear', icon: 'backspace-outline' },
+    { name: 'Redo', icon: 'arrow-redo-circle-outline' },
+    { name: 'Undo', icon: 'arrow-undo-circle-outline' },
+    { name: 'Hint', icon: 'bulb-outline' },
+    { name: 'Note', icon: 'pencil-outline' },
+    { name: 'Reset', icon: 'refresh-circle-outline' }
+  ];
 
   constructor(private storage: StorageService, private alertController: AlertController, private platform: Platform) { }
 
@@ -40,7 +55,6 @@ export class PlayComponent implements OnInit, AfterViewChecked {
     const cells = document.getElementsByClassName('cell');
     const main = document.getElementById('main');
     const cellWidth = main.clientWidth / (this.size + 1);
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < cells.length; i++) {
       const element = cells[i] as HTMLElement;
       element.style.width = cellWidth + 'px';
@@ -59,7 +73,7 @@ export class PlayComponent implements OnInit, AfterViewChecked {
         }, {
           text: 'OK',
           handler: () => {
-            this.createBoard(true);
+            this.array = JSON.parse(JSON.stringify(this.quiz));
           }
         }
       ]
@@ -71,9 +85,23 @@ export class PlayComponent implements OnInit, AfterViewChecked {
     return Math.floor(Math.random() * range);
   }
 
-  createBoard(clickReset?: boolean) {
+  sumZone(idX: number, idY: number) { // idx: row on UI, column on console
+    let sum = 0;
+    for (let i = 0; i < 3; i++) {
+      sum += this.array[idX + i].reduce((total: number, val: number, index: number) => {
+        if (idY <= index && index < idY + 3 && val > 0) {
+          total += val;
+        }
+        return total;
+      }, 0);
+    }
+    return sum;
+  }
+
+  createBoard() {
     this.isWin = false;
     this.count = 0;
+    this.numbers = [...Array(this.size).keys()].map(item => item += 1);
     const sample = [...Array(this.size).keys()].map(item => item += 1);
     // this.array = ;
     for (let i = 0; i < this.size; i++) {
@@ -83,10 +111,34 @@ export class PlayComponent implements OnInit, AfterViewChecked {
       sample.splice(genIdx, 1);
       this.array.push(a);
     }
+
+    const levelIdx = levels.indexOf(this.level) + 1;
+    let emptyCell = 0;
+    let stepLevel = 0;
+    if (levels.length === 2) {
+      stepLevel = this.size / 3;
+      emptyCell = levelIdx * stepLevel;
+    } else if (levels.length === 3) {
+      stepLevel = Math.floor((this.size - 2) / 2);
+      emptyCell = 1 + stepLevel;
+    } else {
+      stepLevel = Math.floor((this.size - 2) / (levels.length - 2));
+      emptyCell = 1 + stepLevel * levelIdx;
+    }
+    const levelNumber = this.size - emptyCell;
+    console.log('emptyCell', emptyCell);
+    for (let i = 0; i < this.array.length; i++) {
+      const curArray = this.array[i];
+      // for (let j = 0; j < levelNumber - 1; j++) {
+      //   let genIdx = this.getRandom(sample.length);
+      // }
+      console.log(curArray);
+    }
     console.log(this.array);
+    this.quiz = JSON.parse(JSON.stringify(this.array));
   }
 
-  createBoardA(clickReset?: boolean) {
+  createBoardA() {
     this.isWin = false;
     this.count = 0;
     const randomStep = Math.floor(Math.random() * this.size);
@@ -113,8 +165,37 @@ export class PlayComponent implements OnInit, AfterViewChecked {
   }
 
   tick(i: number, j: number) {
-    if (this.array[i][j] === '' && !this.isWin) {
-      this.count++;
+    this.selectedI = i;
+    this.selectedJ = j;
+  }
+
+  clickNumber(num: number) {
+    if (this.selectedI >= 0 && this.selectedJ >= 0 && this.quiz[this.selectedI][this.selectedJ] === '') {
+      if (this.array[this.selectedI][this.selectedJ] === '' && !this.isWin) {
+        this.count++;
+      }
+      this.array[this.selectedI][this.selectedJ] = num;
+      if (this.array.flat().every(ele => ele !== '')) {
+        console.log('All filled');
+      }
+    }
+  }
+
+  clickButton(button: { name: string; icon: string}) {
+    if (button.name.toLowerCase() === 'clear') {
+      if (this.selectedI && this.selectedJ) {
+        this.array[this.selectedI][this.selectedJ] = '';
+      }
+    } else if (button.name.toLowerCase() === 'redo') {
+
+    } else if (button.name.toLowerCase() === 'undo') {
+
+    } else if (button.name.toLowerCase() === 'hint') {
+
+    } else if (button.name.toLowerCase() === 'note') {
+
+    } else if (button.name.toLowerCase() === 'reset') {
+      this.reset();
     }
   }
 }

@@ -14,15 +14,38 @@
 
 <ion-content>
   <ion-grid id="main" fixed class="ion-justify-content-between">
-    <ion-row style="flex-grow: 1;" class="ion-justify-content-center ion-align-items-center">
-      <ion-col class="ion-justify-content-center" style="display: flex; flex-grow: 0;">
+    <ion-row style="flex-grow: 1;" class="ion-justify-content-center ion-align-items-end">
+      <ion-row class="ion-justify-content-between">
+        <ion-col sizeXs="4" sizeLg="2" *ngFor="let button of buttons" class="ion-text-center ion-no-padding" (click)="clickButton(button)">
+          <ion-button color="primary" fill="clear" class="ion-no-margin" style="height: 56px;">
+            <div>
+              <ion-icon [name]="button.icon" color="primary" style="margin-bottom: 4px; font-size: 16px;"></ion-icon>
+              <br>
+              <ion-label>{{ button.name }}</ion-label>
+            </div>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-col sizeSm="6" class="ion-justify-content-center ion-no-padding"
+        style="display: flex; flex-grow: 0; border: 1px solid;">
         <ion-row *ngFor="let row of array; let i = index">
-          <div *ngFor="let col of row; let j = index" [id]="i + '-' + j" (click)="tick(i, j)" class="cell">
+          <div *ngFor="let col of row; let j = index" [id]="i + '-' + j" (click)="tick(i, j)"
+            class="cell {{ (i === size - 1 || i % 3 === 2) ? 'cell-border-right' : '' }}
+                        {{ (j === size - 1 || j % 3 === 2) ? 'cell-border-bottom' : '' }}
+                        {{ (i === selectedI && j === selectedJ) ? 'cell-select' : (i === selectedI || j === selectedJ) ? 'same-select' : '' }}">
             <ion-text>
               {{col}}
             </ion-text>
             <div [id]="'line-' + i + '-' + j" class="line"></div>
           </div>
+        </ion-row>
+      </ion-col>
+      <ion-col sizeSm="6">
+        <ion-row>
+          <ion-col size="4" *ngFor="let number of numbers" (click)="clickNumber(number)" [ngClass]="{ 'ion-text-left': number % 3 === 0,
+            'ion-text-right': number % 3 === 1, 'ion-text-center': number % 3 === 2 }">
+            <ion-button strong="true" color="primary" fill="clear" size="large">{{ number }}</ion-button>
+          </ion-col>
         </ion-row>
       </ion-col>
     </ion-row>
